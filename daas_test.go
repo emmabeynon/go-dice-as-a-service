@@ -66,5 +66,21 @@ var _ = Describe("Dice as a service", func() {
 				Expect(writer.Body.Bytes()).To(ContainSubstring("Error: Invalid die params"))
 			})
 		})
+
+		Context("With die params set to D and no number", func() {
+			BeforeEach(func() {
+				writer = httptest.NewRecorder()
+				request, _ = http.NewRequest("GET", "/roll?die=DOG", nil)
+				diceServer(writer, request)
+			})
+
+			It("returns a 400 status code", func() {
+				Expect(writer.Code).To(Equal(400))
+			})
+
+			It("returns an error message", func() {
+				Expect(writer.Body.Bytes()).To(ContainSubstring("Error: Invalid die params"))
+			})
+		})
 	})
 })

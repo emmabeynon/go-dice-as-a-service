@@ -28,12 +28,11 @@ func diceServer(w http.ResponseWriter, req *http.Request) {
 
 	if strings.HasPrefix(diceType, "D") {
 		typeNumber := strings.Split(diceType, "D")[1]
-		numberLimit, err = strconv.Atoi(typeNumber)
-		json, err = generateJsonResult(numberLimit, diceType)
+		if numberLimit, err = strconv.Atoi(typeNumber); err == nil {
+			json, err = generateJsonResult(numberLimit, diceType)
+		}
 	} else if diceType == "" {
-		numberLimit = 6
-		diceType = "D6"
-		json, err = generateJsonResult(6, diceType)
+		json, err = generateJsonResult(6, "D6")
 	} else {
 		err = errors.New("Error: Invalid die params")
 	}
